@@ -1,0 +1,241 @@
+package Sanity_Testing_Stores;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+public class BuyCC {
+	WebDriver driver;
+	@Test(priority=1)
+	public void Buy_CC_Stores() throws InterruptedException {
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		//Open the Gilt website
+		driver.get("https://www.qa.gilt.jp/z/unlock");
+		
+		
+		//Close PopUp
+		WebElement PopUP=driver.findElement(By.className("gs-modal-body"));
+		WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait1.until(ExpectedConditions.visibilityOfElementLocated(By.className("gs-modal-body")));
+		PopUP.click();
+		
+		//Click in Login
+		Thread.sleep(2000);
+		driver.findElement(By.linkText("ログイン")).click();
+		
+		//Fill email and password
+		WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait2.until(ExpectedConditions.visibilityOfElementLocated(By.id("input-email")));
+		driver.findElement(By.id("input-email")).sendKeys("rmaqbul@labellevie.jp");
+		driver.findElement(By.id("input-password")).sendKeys("Raneen@123456");
+		
+		//Click in the Login button
+		WebElement button = driver.findElement(By.className("gs-item-body"));
+		Actions action = new Actions(driver);
+		action.click(button).build().perform();
+		
+		//Make Sure that you are in Login Page by get the title of page
+		String actualURL= driver.getTitle();
+		String ExpectedURL= "ギルト";
+	    Assert.assertEquals(actualURL, ExpectedURL);
+	    
+	  
+        //Click in sale
+		Thread.sleep(3000);
+		List  <WebElement> allSales = driver.findElements(By.className("gs-lazy-image-container"));
+		Actions action1 = new Actions(driver);
+		action1.click(allSales.get(2)).build().perform();
+		
+  		
+  		
+		//Click in product
+		Thread.sleep(3000);
+		WebDriverWait wait3 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait3.until(ExpectedConditions.visibilityOfElementLocated(By.className("gs-lazy-image-container")));
+		List  <WebElement> allProducts = driver.findElements(By.className("gs-lazy-image-container"));
+		Actions action2 = new Actions(driver);
+		action2.click(allProducts.get(0)).build().perform();  
+		
+		//click in color
+		Thread.sleep(2000);
+        boolean color = driver.findElements(By.cssSelector(".swatch-color")).size() != 0;
+		if (color==true) {
+		WebDriverWait wait4 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait4.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".swatch-color")));
+		List  <WebElement> allcolors = driver.findElements(By.cssSelector(".swatch-color"));
+		Actions action4 = new Actions(driver);
+		action4.click(allcolors.get(0)).build().perform();    
+		}
+		
+		//click in size
+		boolean Size= driver.findElement(By.cssSelector(".swatch-size")).isDisplayed();
+		Thread.sleep(2000);
+		if (Size==true) {
+		WebDriverWait wait5 = new WebDriverWait(driver, Duration.ofSeconds(80));
+		wait5.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".swatch-size")));
+		Thread.sleep(2000);
+		WebElement industries = 
+				driver.findElement(By.cssSelector(".swatch-size"));
+				List<WebElement> links = industries.findElements(By.tagName("li"));
+				for (int i = 0; i <= links.size(); i++)
+				{
+				    System.out.println(links.get(i).getText());
+				     
+				    System.out.println(links.get(i).getAttribute("class"));
+				    System.out.println(links.size());
+
+				    if (links.get(i).getAttribute("class").equals("gs-swatch-unit soldout")) {
+				    	continue;
+				    }
+				    else if(links.get(i).getAttribute("class")!=("gs-swatch-unit soldout")) {
+				    Actions action4 = new Actions(driver);
+					action4.click(links.get(i)).build().perform();  
+				    break;
+				    }
+				}
+
+		}
+		
+
+		//click in Add to cart 
+		Thread.sleep(2000);
+		boolean AddTocart= driver.findElement(By.xpath("//button[text()='マイバッグに入れる']")).isDisplayed();
+		if(AddTocart==true) {
+
+		WebDriverWait wait6 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait6.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='マイバッグに入れる']")));
+		driver.findElement(By.xpath("//button[text()='マイバッグに入れる']")).click();
+		}
+		//click in Proceed to checkout
+		Thread.sleep(2000);
+		boolean ProccedToCheckout= driver.findElement(By.xpath("//span[text()='レジに進む']")).isDisplayed();
+		if(ProccedToCheckout==true) {
+		WebDriverWait wait7 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait7.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='レジに進む']")));
+		driver.findElement(By.xpath("//span[text()='レジに進む']")).click();
+		}
+		
+		//Scroll down to sender name section
+		Thread.sleep(2000);
+		boolean senderSectionDisplayed= driver.findElement(By.xpath("//div[text()='指定なし']")).isDisplayed();
+		if(senderSectionDisplayed==true) {
+		WebElement SenderSectionscrollDown = driver.findElement(By.xpath("//div[text()='指定なし']"));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView(true)", SenderSectionscrollDown);
+		
+		//click in Sender Name 
+				Thread.sleep(2000);
+				Boolean SenderSection= driver.findElement(By.xpath("//div[text()='指定なし']")).isDisplayed();
+				if(SenderSection==true) {
+				WebDriverWait wait9 = new WebDriverWait(driver, Duration.ofSeconds(40));
+				wait9.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[text()='指定なし']")));
+				driver.findElement(By.xpath("//div[text()='指定なし']")).click();
+				
+				}
+	   // Fill sender name
+		        Thread.sleep(2000);
+		        boolean Sendername= driver.findElement(By.id("greetingSender")).isDisplayed();
+				if(Sendername==true) {
+				WebDriverWait wait10 = new WebDriverWait(driver, Duration.ofSeconds(40));
+				wait10.until(ExpectedConditions.elementToBeClickable(By.id("greetingSender")));
+				driver.findElement(By.id("greetingSender")).sendKeys("Raneen Maqbul");
+				
+				}
+				
+		
+		//select the Gift wrapping
+				Thread.sleep(2000);
+		        boolean GiftWrapping= driver.findElement(By.xpath("//select[@ng-model='unit.gift_wrap.value']")).isDisplayed();
+				WebElement GiftWrap = driver.findElement(By.xpath("//select[@ng-model='unit.gift_wrap.value']"));
+				Select selectGiftwrap = new Select(GiftWrap);
+				selectGiftwrap.selectByIndex(1);
+				
+	  //Scroll down to button Keep 
+				Thread.sleep(3000);
+		        boolean buttonKeep= driver.findElement(By.cssSelector(".primary")).isDisplayed();
+		        if(buttonKeep==true) {
+				WebElement scrollDownToButtonKeep = driver.findElement(By.cssSelector(".primary"));
+				JavascriptExecutor javasc = (JavascriptExecutor) driver;
+				javasc.executeScript("arguments[0].scrollIntoView(true)", scrollDownToButtonKeep);
+				Thread.sleep(2000);
+		        }
+	  // click in button send
+		        
+				 Thread.sleep(2000);
+				 boolean buttonSend = driver.findElement(By.cssSelector(".primary")).isDisplayed();
+				 WebDriverWait wait11 = new WebDriverWait(driver, Duration.ofSeconds(50));
+				 wait11.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".primary")));
+				 Actions action4 = new Actions(driver);
+			    action4.click(driver.findElement(By.cssSelector(".primary"))).build().perform(); 
+		}	     
+	 //Scroll down to Delivery date section
+				Thread.sleep(5000);
+				Boolean DeliveryDateSection= driver.findElement(By.xpath("//span[text()='指定なし']")).isDisplayed();
+				if(DeliveryDateSection==true) {
+				WebElement DeliveryDateSectionscrollDown = driver.findElement(By.xpath("//span[text()='指定なし']"));
+				JavascriptExecutor jas = (JavascriptExecutor) driver;
+				jas.executeScript("arguments[0].scrollIntoView(true)", DeliveryDateSectionscrollDown);
+				Thread.sleep(2000);   
+				
+				
+				
+   //click in delivery date section
+				Thread.sleep(2000);
+				WebDriverWait wait12 = new WebDriverWait(driver, Duration.ofSeconds(40));
+				wait12.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='指定なし']")));
+				driver.findElement(By.xpath("//span[text()='指定なし']")).click();
+				
+				
+				
+	//select the date
+				
+				Thread.sleep(2000);
+				
+				WebElement DateSelection = driver.findElement(By.xpath("//select[@ng-model='selection.date']"));
+				Select selectTheDate = new Select(DateSelection);
+				selectTheDate.selectByIndex(2);
+				
+	//select the time	
+				Thread.sleep(5000);
+
+				WebElement CountryName2 = driver.findElement(By.xpath("//select[@ng-model='selection.time_range']"));
+				Select selectCountryName2 = new Select(CountryName2);
+				selectCountryName2.selectByIndex(2);	
+				Thread.sleep(2000);
+				Actions action5 = new Actions(driver);
+			    action5.click(driver.findElement(By.cssSelector(".primary"))).build().perform(); 
+				}
+	//Click in proceed checkout
+	Thread.sleep(2000);
+	Actions action6 = new Actions(driver);
+    action6.click(driver.findElement(By.xpath("//button[text()='注文を確定']"))).build().perform();
+  //Click in cancel button order
+    Thread.sleep(2000);
+	Actions action7 = new Actions(driver);
+    action7.click(driver.findElement(By.xpath("//button[text()='注文キャンセル']"))).build().perform();
+    Thread.sleep(2000);
+    Actions action8 = new Actions(driver);
+    action8.click(driver.findElement(By.xpath("//button[text()='はい']"))).build().perform();
+	}}
+	
+	
+
+
+	
+
+	
+	
+

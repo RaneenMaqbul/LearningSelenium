@@ -1,0 +1,18 @@
+package Sanity_Testing_City;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+
+public class Send_Invitation_City {
+
+	WebDriver driver;
+	@Test(priority=1)
+	public void loginCity_With_Valid_Email_And_Password() throws InterruptedException {
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		//Open the Gilt website
+		driver.get("https://www.qa.giltcity.jp/z/unlock");
+		
+
+}}

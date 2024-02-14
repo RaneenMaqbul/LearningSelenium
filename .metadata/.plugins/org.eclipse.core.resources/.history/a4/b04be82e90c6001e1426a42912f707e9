@@ -1,0 +1,10 @@
+package Sanity_Testing_City;
+
+public class Send_Invitation_City {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

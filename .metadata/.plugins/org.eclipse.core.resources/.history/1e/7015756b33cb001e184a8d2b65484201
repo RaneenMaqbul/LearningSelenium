@@ -1,0 +1,133 @@
+package Sanity_Testing_City;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+public class AddToWaitListCity {
+	WebDriver driver;
+	@Test(priority=1)
+	public void loginCity_With_Valid_Email_And_Password() throws InterruptedException {
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		//Open the Gilt website
+		driver.get("https://www.qa.giltcity.jp/z/unlock");
+		
+		
+		//Hover in navbar and Click in Login 
+		Thread.sleep(2000);
+        driver.findElement(By.className("gs-header-actions")).click();
+        driver.findElement(By.linkText("ログイン")).click();
+		
+		//Fill email and password
+		WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(20));
+		wait2.until(ExpectedConditions.visibilityOfElementLocated(By.id("input-email")));
+		driver.findElement(By.id("input-email")).sendKeys("rmaqbul@labellevie.jp");
+		driver.findElement(By.id("input-password")).sendKeys("Raneen@123456");
+		//Click in the Login button
+		WebElement button = driver.findElement(By.className("gs-item-body"));
+		Actions action = new Actions(driver);
+		action.click(button).build().perform();
+		
+
+		//Make Sure that you are in Login Page by get the title of page
+		Thread.sleep(2000);
+		String actualURL= driver.getCurrentUrl();
+		String ExpectedURL= "https://www.qa.giltcity.jp/offers";
+	    Assert.assertEquals(actualURL, ExpectedURL);
+	    
+		//Make Sure that you are in Login Page by verify the displaying of email
+		Thread.sleep(2000);
+        driver.findElement(By.className("gs-header-actions")).click();
+        Boolean result=driver.findElement(By.xpath("//div[text()='rmaqbul@labellevie.jp']")).isDisplayed();
+        Assert.assertTrue(result);
+        
+
+	
+        //Click in offer and open it in new tab
+		Thread.sleep(3000);
+		List  <WebElement> alloffer = driver.findElements(By.className("gs-offer-image"));
+		
+		for (int i = 0; i <= alloffer.size(); i++) {
+		
+		Thread.sleep(2000);
+		WebDriverWait wait7 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait7.until(ExpectedConditions.elementToBeClickable(By.className("gs-offer-image")));
+		Thread.sleep(2000);
+		
+		WebElement e1= driver.findElement(By.className("gs-offer-image"));
+		Actions action1 = new Actions(driver);
+		action1.keyDown(Keys.LEFT_CONTROL).click(alloffer.get(i)).keyUp(Keys.LEFT_CONTROL).build().perform();
+		
+		// switch focus from 1st tab to 2nd tab 
+		
+		/*
+
+		//Get the main window handle
+		String mainWindowHandle = driver.getWindowHandle();
+		for (String childWindowHandle : driver.getWindowHandles()) {
+			  //If window handle is not main window handle then close it 
+			  if(!childWindowHandle.equals(mainWindowHandle)){
+			  driver.switchTo().window(childWindowHandle);
+			  // Close child windows
+			  Thread.sleep(2000);
+				boolean Soldout = driver.findElements(By.xpath("//span[text()='売り切れ']")).size()!=0;
+				if(Soldout==false) {
+
+			  driver.close();
+			//switch back to main window
+				driver.switchTo().window(mainWindowHandle);
+				}
+			  }
+			} 
+			
+			
+			
+			
+		boolean Soldout = driver.findElements(By.xpath("//span[text()='売り切れ']")).size()!=0;
+		if(Soldout==true) {
+  		//Scroll down to solid out
+		WebDriverWait wait3 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait3.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='売り切れ']")));
+		WebElement SoldOutSectionscrollDown = driver.findElement(By.xpath("//span[text()='売り切れ']"));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView(true)", SoldOutSectionscrollDown);
+
+		//Click in soldout Element 
+		Thread.sleep(2000);
+		WebDriverWait wait4 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait4.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".is-soldout")));
+		Actions action4 = new Actions(driver);
+		action4.click(driver.findElement(By.cssSelector(".is-soldout"))).build().perform();
+		
+		//click in add to waitlist
+		Thread.sleep(2000);
+		WebDriverWait wait9 = new WebDriverWait(driver, Duration.ofSeconds(40));
+		wait9.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='ウェイトリストに追加']")));
+		driver.findElement(By.xpath("//button[text()='ウェイトリストに追加']")).click();
+		//Make Sure that you add the item to waitlist
+				Thread.sleep(2000);
+		        Boolean resultt=driver.findElement(By.xpath("//span[text()='商品はお客様のウェイトリストに追加されました。']")).isDisplayed();
+		        Assert.assertTrue(resultt);*/
+		break;
+		}
+		}
+		
+	
+	}
+	
+
+			
+		
+	
